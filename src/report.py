@@ -170,76 +170,76 @@ def generate_report(data, frequency='weekly'):
 
 
 
-    # GRÁFICO 3: Distribución de tipos de proyecto por cliente
+    # # GRÁFICO 3: Distribución de tipos de proyecto por cliente
 
-    # Preparar los datos
-    conteo_cliente_tipo = df.groupby(['client', 'type']).size().unstack().fillna(0)
+    # # Preparar los datos
+    # conteo_cliente_tipo = df.groupby(['client', 'type']).size().unstack().fillna(0)
 
-    # Crear figura y eje manualmente
-    fig, ax = plt.subplots(figsize=(14, 7))
+    # # Crear figura y eje manualmente
+    # fig, ax = plt.subplots(figsize=(14, 7))
 
-    # Dibujar gráfico de barras apiladas
-    conteo_cliente_tipo.plot(
-        kind='bar',
-        stacked=True,
-        ax=ax,
-        color=mi_paleta[:conteo_cliente_tipo.columns.size]
-    )
+    # # Dibujar gráfico de barras apiladas
+    # conteo_cliente_tipo.plot(
+    #     kind='bar',
+    #     stacked=True,
+    #     ax=ax,
+    #     color=mi_paleta[:conteo_cliente_tipo.columns.size]
+    # )
 
-    # Títulos y etiquetas
-    ax.set_title("Distribution of Project Types by Client")
-    ax.set_xlabel("Client")
-    ax.set_ylabel("Request Count")
-    ax.set_xticklabels(conteo_cliente_tipo.index, rotation=90, fontsize=13)
-    ax.tick_params(axis='y', labelsize=13)
-    ax.legend(fontsize=6)
+    # # Títulos y etiquetas
+    # ax.set_title("Distribution of Project Types by Client")
+    # ax.set_xlabel("Client")
+    # ax.set_ylabel("Request Count")
+    # ax.set_xticklabels(conteo_cliente_tipo.index, rotation=90, fontsize=13)
+    # ax.tick_params(axis='y', labelsize=13)
+    # ax.legend(fontsize=6)
 
-    # Eliminar fondo
-    fig.patch.set_visible(False)
-    ax.set_facecolor('none')
+    # # Eliminar fondo
+    # fig.patch.set_visible(False)
+    # ax.set_facecolor('none')
 
-    plt.tight_layout()
-    plt.show()
+    # plt.tight_layout()
+    # plt.show()
 
-    # Guardar gráfico
-    save_and_close_fig(fig, output_dir, filenames)
+    # # Guardar gráfico
+    # save_and_close_fig(fig, output_dir, filenames)
 
 
 
-    # GRÁFICO 4: Tiempo promedio de resolución por cliente
+    # # GRÁFICO 4: Tiempo promedio de resolución por cliente
 
-    # Agrupación
-    df_completadas = df_muestra[df_muestra['status'] == 'Complete'].copy()
-    tiempos_por_cliente = df_completadas.groupby('client')['days_to_complete'].mean().sort_values(ascending=False)
+    # # Agrupación
+    # df_completadas = df_muestra[df_muestra['status'] == 'Complete'].copy()
+    # tiempos_por_cliente = df_completadas.groupby('client')['days_to_complete'].mean().sort_values(ascending=False)
 
-    # Crear figura y eje
-    fig, ax = plt.subplots(figsize=(12, 6))
+    # # Crear figura y eje
+    # fig, ax = plt.subplots(figsize=(12, 6))
 
-    # Gráfico con Seaborn usando el eje
-    sns.barplot(
-        x=tiempos_por_cliente.values,
-        y=tiempos_por_cliente.index,
-        palette=mi_paleta[:len(tiempos_por_cliente)],
-        ax=ax
-    )
+    # # Gráfico con Seaborn usando el eje
+    # sns.barplot(
+    #     x=tiempos_por_cliente.values,
+    #     y=tiempos_por_cliente.index,
+    #     palette=mi_paleta[:len(tiempos_por_cliente)],
+    #     ax=ax
+    # )
 
-    # Personalización
-    ax.set_xlabel("Average Resolution Time (days)")
-    ax.set_ylabel("Client")
-    ax.set_title("Average Resolution Time by Client")
-    ax.tick_params(axis='x', labelrotation=90, labelsize=13)
-    ax.tick_params(axis='y', labelsize=13)
-    ax.grid(False)
+    # # Personalización
+    # ax.set_xlabel("Average Resolution Time (days)")
+    # ax.set_ylabel("Client")
+    # ax.set_title("Average Resolution Time by Client")
+    # ax.tick_params(axis='x', labelrotation=90, labelsize=13)
+    # ax.tick_params(axis='y', labelsize=13)
+    # ax.grid(False)
 
-    # Quitar fondo
-    fig.patch.set_visible(False)
-    ax.set_facecolor('none')
+    # # Quitar fondo
+    # fig.patch.set_visible(False)
+    # ax.set_facecolor('none')
 
-    plt.tight_layout()
-    plt.show()
+    # plt.tight_layout()
+    # plt.show()
 
-    # Guardar gráfico
-    save_and_close_fig(fig, output_dir, filenames)
+    # # Guardar gráfico
+    # save_and_close_fig(fig, output_dir, filenames)
 
 
     return filenames
