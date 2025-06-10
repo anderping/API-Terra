@@ -7,7 +7,7 @@ import os
 import uuid
 from datetime import datetime, timedelta
 
-from pymongo import MongoClient, DESCENDING
+# from pymongo import MongoClient, DESCENDING
 
 
 mi_paleta = [
