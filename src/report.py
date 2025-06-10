@@ -26,8 +26,6 @@ mi_paleta = [
 
 
 def save_and_close_fig(fig, output_dir, filenames):
-    os.makedirs(output_dir, exist_ok=True)
-
     filename = f"graph_{uuid.uuid4().hex}.png"
     path = os.path.join(output_dir, filename)
 

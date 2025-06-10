@@ -30,7 +30,8 @@ def predict():
     text = data.get('request_text', None) # ASEGURAR QUE ESE ES EL NOMBRE
     type = data.get('request_type', None)
 
-    en_text = translate(text) # Traducir a inglés si necesario
+    # Traducir a inglés si necesario
+    en_text = translate(text) 
 
     sample = pd.DataFrame([{
         'request_text': en_text,
@@ -39,12 +40,6 @@ def predict():
 
     prediction = model.predict(sample)
 
-    # if en_text is None:  # EL TEXTO TIENE QUE VENIR SIEMPRE COMPLETADO POR PARTE DE FRONTEND?
-    #     return jsonify({'prediction': 'Not addressable'})
-
-    # if type == "Other":
-    #     return jsonify({'prediction': prediction['suggested_type'].item()})
-         
     return jsonify({'prediction': prediction['suggested_type'].item()}) # EN CASO DE QUE SIMPLEMENTE EL USUARIO HAYA PUESTO UN TYPE CONCRETO, SE LE DA A FRONTEND LA PREDICCIÓN
     # Y FULLSTACK SE ENCARGA DE LEVANTAR LA VENTANA QUE INDIQUE LA DISCREPANCIA Y MANEJARLA, DE FORMA QUE SI EL USUARIO QUIERE MANTENER LA SUYA SE PONGA UN TAG O ALGO
     # EN LA TARJETA DE CLICK-UP O SE ENVÍE UNA NOTIFICACIÓN DE ALGÚN TIPO AL PM. SI EL USUARIO LA ACEPTA SE CAMBIA EL TYPE POR EL PREDICHO.
