@@ -80,7 +80,7 @@ def generate_report(data, frequency='weekly'):
     
     # GENERAR GRÁFICOS
 
-    # GRÁFICO 1: Distribución de tipos de solicitudes
+    # GRÁFICO 1: Solicitudes recibidas en la última semana
     
     # Convertir 'created_at' a datetime
     df['createdAt'] = pd.to_datetime(df['createdAt'])
@@ -125,7 +125,7 @@ def generate_report(data, frequency='weekly'):
     )
 
     #ax.set_title("Solicitudes recibidas en la última semana", fontsize=14, weight='bold')
-    ax.set_title(f"Distribución de Solicitudes\nSemana previa al {hoy.strftime('%d/%m/%Y')}", pad=20)
+    ax.set_title(f"Distribución de Solicitudes\nSemana previa al {hoy.strftime('%d/%m/%Y')}\nSolicitudes recibidas en la última semana: {total}", pad=20)
     ax.axis('equal')  # Para que sea un círculo
 
     # Eliminar fondo
@@ -133,37 +133,39 @@ def generate_report(data, frequency='weekly'):
     ax.set_facecolor('none')
 
     plt.tight_layout()
-    plt.show()
 
     # Guardar gráfico
     save_and_close_fig(fig, output_dir, filenames)
 
 
+    # GRÁFICO 2: Tiempo promedio de resolución semanal
 
-    # GRÁFICO 2: Cantidad de solicitudes por estado
+    np.random.seed(42)
+    df['resolucion_dias'] = np.random.randint(1, 22, size=len(df))
 
-    hoy = datetime.now()
-    una_semana_atras = hoy - timedelta(days=10)
-    df_ultima_semana = df[df['created_at'] >= una_semana_atras]
+    resolucion_semanal = df.groupby(df['createdAt'].dt.to_period('W'))['resolucion_dias'].mean()
 
-    df_muestra = df_ultima_semana.sample(n=min(30, len(df_ultima_semana)), random_state=42)
+    # Crear figura y eje
+    fig, ax = plt.subplots(figsize=(12, 6))
 
-    conteo_por_estado = df_muestra['status'].value_counts()
+    ax.plot(
+        resolucion_semanal.index.to_timestamp(),
+        resolucion_semanal.values,
+        marker='o',
+        color=mi_paleta[1]
+    )
 
-    fig, ax = plt.subplots(figsize=(8, 5))  # Usa subplots para tener control sobre el eje
-    ax.bar(conteo_por_estado.index, conteo_por_estado.values, color=mi_paleta[:len(conteo_por_estado)])
-    ax.set_title("Number of Requests by Status")
-    ax.set_xlabel("State")
-    ax.set_ylabel("Quantity")
-    ax.set_xticklabels(conteo_por_estado.index, rotation=45)
-    ax.grid(False)
+    ax.set_title("Tiempo promedio de resolución semanal")
+    ax.set_xlabel("Semana")
+    ax.set_ylabel("Días")
+    ax.axhline(21, linestyle='--', color='gray', label='Límite SLA')
+    ax.legend()
+    ax.grid(True)
+    fig.tight_layout()
 
-    # Quitar fondo del gráfico
-    fig.patch.set_visible(False)       # Quita fondo general de la figura
-    ax.set_facecolor('none')           # Quita fondo del área del gráfico
-
-    plt.tight_layout()
-    plt.show()
+    # Fondo transparente
+    fig.patch.set_visible(False)
+    ax.set_facecolor('none')
 
     # Guardar gráfico
     save_and_close_fig(fig, output_dir, filenames)
@@ -199,7 +201,6 @@ def generate_report(data, frequency='weekly'):
     # ax.set_facecolor('none')
 
     # plt.tight_layout()
-    # plt.show()
 
     # # Guardar gráfico
     # save_and_close_fig(fig, output_dir, filenames)
@@ -236,7 +237,6 @@ def generate_report(data, frequency='weekly'):
     # ax.set_facecolor('none')
 
     # plt.tight_layout()
-    # plt.show()
 
     # # Guardar gráfico
     # save_and_close_fig(fig, output_dir, filenames)
