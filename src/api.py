@@ -10,7 +10,8 @@ from flask_cors import CORS
 import report
 
 
-app = Flask(__name__)
+base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+app = Flask(__name__, static_folder=os.path.join(base_dir, 'static'))
 app.config["DEBUG"] = True
 CORS(app)
 
@@ -19,7 +20,9 @@ os.chdir(os.path.dirname(__file__))
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    with open('model.pkl', 'rb') as file:
+    model_path = os.path.join(os.path.dirname(__file__), '..', 'model', 'model.pkl')
+
+    with open(model_path, 'rb') as file:
         model = joblib.load(file) # ASEGURAR QUE ESE ES EL NOMBRE
 
     data = request.get_json()
@@ -49,13 +52,15 @@ def predict():
 
 @app.route('/report', methods=['POST'])
 def report():
-    frequency = request.get_json('frequency', None) # FREQUENCY SE ESCOGE A TRAVÉS DEL FRONTEND, CON UN SELECTOR DE ALGÚN TIPO
-
+    # frequency = request.get_json('frequency', None) # FREQUENCY SE ESCOGE A TRAVÉS DEL FRONTEND, CON UN SELECTOR DE ALGÚN TIPO
+    frequency = request.get_json('frequency', None)
+    
+    
     try:
-        filenames = report.generate_report(frequency)
+        filenames = report.generate_report()
         urls = [url_for('static', filename=f'reports/{file_name}', _external=True) for file_name in filenames]
         
-        return jsonify({"status": "ok", "graphs": urls})  # COMENTAR CON FRONTEND QUE LO QUE LES MANDO SON URLS
+        return jsonify({"status": "ok", "graphs": urls})  # COMENTAR CON FULLSTACK QUE LO QUE LES MANDO SON URLS
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500

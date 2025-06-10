@@ -35,7 +35,9 @@ def save_and_close_fig(fig, output_dir, filenames):
     filenames.append(filename)
 
 
-def generate_report(frequency, output_dir="static/reports"):
+def generate_report(frequency='weekly'):
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    output_dir = os.path.join(base_dir, 'static', 'reports')
     os.makedirs(output_dir, exist_ok=True)
     
     # Elimina imágenes previas del directorio
