@@ -6,6 +6,8 @@ import seaborn as sns
 import os
 import uuid
 from datetime import datetime, timedelta
+import json
+
 
 # from pymongo import MongoClient, DESCENDING
 
@@ -26,6 +28,8 @@ mi_paleta = [
 
 
 def save_and_close_fig(fig, output_dir, filenames):
+    """Guarda y cierra una figura de matplotlib."""
+    
     filename = f"graph_{uuid.uuid4().hex}.png"
     path = os.path.join(output_dir, filename)
 
@@ -36,6 +40,8 @@ def save_and_close_fig(fig, output_dir, filenames):
 
 
 def generate_report(data, frequency='weekly'):
+    """Genera un informe de gráficos a partir de datos JSON."""
+
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
     output_dir = os.path.join(base_dir, 'static', 'reports')
     os.makedirs(output_dir, exist_ok=True)
@@ -71,7 +77,22 @@ def generate_report(data, frequency='weekly'):
     #     d["client_name"] = d.get("client", {}).get("name")
     #     d.pop("client", None)  # Elimina el objeto client si ya no se necesita
 
-    df = pd.DataFrame(data) # ASEGURAR QUE ESE ES EL NOMBRE DEL DATAFRAME
+
+    # Cargar datos
+    df = pd.json_normalize(json.loads(data))
+    
+    # COLUMNAS DEL DATAFRAME:
+    #
+    # Index(['_id', 'issueType', 'status', 'issueId', 'device', 'browser', 'clientComment', 'page', 'createdAt', '__v', 'screenshot',
+    #    'terraComments', 'client.lockUntil', 'client.resetPasswordToken', 'client.resetPasswordExpires', 'client._id', 'client.userId',
+    #    'clientComment', 'page', 'createdAt', '__v', 'screenshot', 'terraComments', 'client.lockUntil', 'client.resetPasswordToken',
+    #    'client.resetPasswordExpires', 'client._id', 'client.userId', 'client.name', 'client.role', 'client.email', 'client.createdAt',
+    #    'terraComments', 'client.lockUntil', 'client.resetPasswordToken', 'client.resetPasswordExpires', 'client._id', 'client.userId',
+    #    'client.name', 'client.role', 'client.email', 'client.createdAt', 'client.resetPasswordExpires', 'client._id', 'client.userId',
+    #    'client.name', 'client.role', 'client.email', 'client.createdAt', 'client.name', 'client.role', 'client.email', 'client.createdAt',
+    #    'client.updatedAt', 'client.__v', 'client.workspaceId', 'client.updatedAt', 'client.__v', 'client.workspaceId',
+    #    'client.loginAttempts', 'client.folderId', 'client.spaceId'],
+    #   dtype='object')
 
 
     filenames = []
@@ -139,9 +160,9 @@ def generate_report(data, frequency='weekly'):
     # GRÁFICO 2: Tiempo promedio de resolución semanal
 
     np.random.seed(42)
-    df['resolucion_dias'] = np.random.randint(1, 22, size=len(df))
+    df['resolutionTime'] = np.random.randint(1, 22, size=len(df))
 
-    resolucion_semanal = df.groupby(df['createdAt'].dt.to_period('W'))['resolucion_dias'].mean()
+    resolucion_semanal = df.groupby(df['createdAt'].dt.to_period('W'))['resolutionTime'].mean()
 
     # Crear figura y eje
     fig, ax = plt.subplots(figsize=(12, 6))

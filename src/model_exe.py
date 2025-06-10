@@ -30,6 +30,8 @@ from googletrans import Translator
 
 
 def translate(text):
+    """Traduce el texto al inglés si no está en ese idioma."""
+
     # sym_spell_es = cargar_symspell_es()
     translator = Translator()
 
@@ -76,6 +78,8 @@ DOMAIN_TERMS = {
 
 
 class TextPreprocessor(BaseEstimator, TransformerMixin):
+    """Preprocesador de texto para extraer verbos de acción, términos de dominio y marcadores de posición."""
+    
     def __init__(self):
         self.nlp = spacy.load("en_core_web_sm")
         

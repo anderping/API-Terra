@@ -20,6 +20,8 @@ os.chdir(os.path.dirname(__file__))
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    """Endpoint to predict the type of a request based on its text."""
+
     model_path = os.path.join(os.path.dirname(__file__), '..', 'model', 'model.pkl')
 
     with open(model_path, 'rb') as file:
@@ -47,6 +49,8 @@ def predict():
 
 @app.route('/report', methods=['POST'])
 def report():
+    """Endpoint to generate a report based on the provided data in JSON format."""
+
     # frequency = request.get_json('frequency', None) # FREQUENCY SE ESCOGE A TRAVÉS DEL FRONTEND, CON UN SELECTOR DE ALGÚN TIPO
     data = request.get_json()
     
