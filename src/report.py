@@ -37,7 +37,7 @@ def save_and_close_fig(fig, output_dir, filenames):
     filenames.append(filename)
 
 
-def generate_report(frequency='weekly'):
+def generate_report(data, frequency='weekly'):
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
     output_dir = os.path.join(base_dir, 'static', 'reports')
     os.makedirs(output_dir, exist_ok=True)
@@ -47,33 +47,33 @@ def generate_report(frequency='weekly'):
         if fname.endswith(".png"):
             os.remove(os.path.join(output_dir, fname))
 
-    # Obtener datos de MongoDB
-    client = MongoClient("mongodb://localhost:27017/") # CAMBIAR SEGÚN URL DE CONEXIÓN
-    db = client["mi_base"] # CAMBIAR SEGÚN NOMBRE DE BASE DE DATOS
-    coleccion = db["mi_coleccion"]  # CAMBIAR SEGÚN NOMBRE DE COLECCIÓN
+    # # Obtener datos de MongoDB
+    # client = MongoClient("mongodb://localhost:27017/") # CAMBIAR SEGÚN URL DE CONEXIÓN
+    # db = client["mi_base"] # CAMBIAR SEGÚN NOMBRE DE BASE DE DATOS
+    # coleccion = db["mi_coleccion"]  # CAMBIAR SEGÚN NOMBRE DE COLECCIÓN
 
-    projection = {
-        "issueType": 1,
-        "status": 1,
-        "client.name": 1,
-    }
+    # projection = {
+    #     "issueType": 1,
+    #     "status": 1,
+    #     "client.name": 1,
+    # }
 
-    if frequency == 'weekly':
-        # Informe semanal regular: últimos 30 registros
-        datos = list(coleccion.find({}, projection).sort("createdAt", DESCENDING).limit(30))  # HAY QUE ASEGURAR CON FULLSTACK QUE "DATE" ESTÁ EN FORMATO CORRECTO (DATE)
+    # if frequency == 'weekly':
+    #     # Informe semanal regular: últimos 30 registros
+    #     datos = list(coleccion.find({}, projection).sort("createdAt", DESCENDING).limit(30))  # HAY QUE ASEGURAR CON FULLSTACK QUE "DATE" ESTÁ EN FORMATO CORRECTO (DATE)
 
-    elif frequency == 'monthly':
-        # Informe mensual regular: últimos 120 registros
-        datos = list(coleccion.find({}, projection).sort("createdAt", DESCENDING).limit(120))
+    # elif frequency == 'monthly':
+    #     # Informe mensual regular: últimos 120 registros
+    #     datos = list(coleccion.find({}, projection).sort("createdAt", DESCENDING).limit(120))
 
-    if not datos:
-        raise ValueError("No data available.")
+    # if not datos:
+    #     raise ValueError("No data available.")
     
-    for d in datos:
-        d["client_name"] = d.get("client", {}).get("name")
-        d.pop("client", None)  # Elimina el objeto client si ya no se necesita
+    # for d in datos:
+    #     d["client_name"] = d.get("client", {}).get("name")
+    #     d.pop("client", None)  # Elimina el objeto client si ya no se necesita
 
-    df = pd.DataFrame(datos) # ASEGURAR QUE ESE ES EL NOMBRE DEL DATAFRAME
+    df = pd.DataFrame(data) # ASEGURAR QUE ESE ES EL NOMBRE DEL DATAFRAME
 
 
     filenames = []

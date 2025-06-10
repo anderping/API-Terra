@@ -53,11 +53,10 @@ def predict():
 @app.route('/report', methods=['POST'])
 def report():
     # frequency = request.get_json('frequency', None) # FREQUENCY SE ESCOGE A TRAVÉS DEL FRONTEND, CON UN SELECTOR DE ALGÚN TIPO
-    frequency = request.get_json('frequency', None)
-    
+    data = request.get_json()
     
     try:
-        filenames = report.generate_report()
+        filenames = report.generate_report(data)
         urls = [url_for('static', filename=f'reports/{file_name}', _external=True) for file_name in filenames]
         
         return jsonify({"status": "ok", "graphs": urls})  # COMENTAR CON FULLSTACK QUE LO QUE LES MANDO SON URLS
