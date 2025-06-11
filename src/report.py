@@ -5,17 +5,19 @@ import seaborn as sns
 
 import os
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import json
 
 
 # from pymongo import MongoClient, DESCENDING
 
 
-mi_paleta = [
-    
+# json_data = """[{"_id":"6847e0955eb9ba10de0cc473","issueType":"Copy revision","status":"In Progress","issueId":"86c3y1ebq","client":{"lockUntil":null,"resetPasswordToken":null,"resetPasswordExpires":null,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"gsyshwn","page":"jsnsh","createdAt":"2025-06-10T07:36:53.707Z","__v":0,"screenshot":"","terraComments":"Muy bien"},{"_id":"6847e11a5eb9ba10de0cc4a7","issueType":"Requested Change","status":"On Hold","issueId":"86c3y1gd5","client":{"lockUntil":null,"resetPasswordToken":null,"resetPasswordExpires":null,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"duask","page":"cnjanl","screenshot":"captura-desde-2025-04-07-17-02-47-250610073906-g3.png","createdAt":"2025-06-10T07:39:06.910Z","__v":0},{"_id":"6847f62a1c4d59011c9f3818","issueType":"Requested Change","status":"Post Launch","issueId":"86c3y4nhz","client":{"lockUntil":null,"resetPasswordToken":null,"resetPasswordExpires":null,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"deed","page":"dedde","screenshot":"captura-desde-2025-04-07-17-02-47-250610090857-d1.png","createdAt":"2025-06-10T09:08:58.584Z","__v":0},{"_id":"68481a2b110e4502d93f4b96","issueType":"Requested Change","status":"On Hold","issueId":"86c3y97z6","client":{"lockUntil":null,"resetPasswordToken":null,"resetPasswordExpires":null,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"deedde","page":"deeded","screenshot":"captura-desde-2025-04-07-17-02-47-250610114234-p9.png","createdAt":"2025-06-10T11:42:35.869Z","__v":0},{"_id":"68481daf18f5b4769c307251","issueType":"Bug Fix","status":"On Hold","issueId":"86c3y9kt3","client":{"lockUntil":null,"resetPasswordToken":null,"resetPasswordExpires":null,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"dede","page":"deeded","createdAt":"2025-06-10T11:57:35.769Z","__v":0},{"_id":"68481dbf18f5b4769c307262","issueType":"Copy revision","status":"Ready to upload","issueId":"86c3y9kya","client":{"lockUntil":null,"resetPasswordToken":null,"resetPasswordExpires":null,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"ededd","page":"ededde","createdAt":"2025-06-10T11:57:51.709Z","__v":0}]"""
+
+
+
+mi_paleta = [    
     "#189B5C",  # Emerald Green
-    #"#7CE55E",  # Neon Green
     "#FFB41D",  # Sol Yellow
     "#3D9DD8",  # Blue Cielo
     "#F96E43",  # Rojizo
@@ -79,7 +81,7 @@ def generate_report(data, frequency='weekly'):
 
 
     # Cargar datos
-    df = pd.json_normalize(json.loads(data))
+    df = pd.json_normalize(data)
     
     # COLUMNAS DEL DATAFRAME:
     #
@@ -105,7 +107,7 @@ def generate_report(data, frequency='weekly'):
     df['createdAt'] = pd.to_datetime(df['createdAt'])
 
     # Calcular la fecha de hace una semana
-    hoy = datetime.now()
+    hoy = datetime.now(timezone.utc)
     una_semana_atras = hoy - timedelta(days=7)
 
     # Filtrar las solicitudes de la última semana
@@ -260,9 +262,13 @@ def generate_report(data, frequency='weekly'):
     # # Guardar gráfico
     # save_and_close_fig(fig, output_dir, filenames)
 
+    print(filenames)
 
     return filenames
 
 
 # if __name__ == "__main__":
 #     generate_report()
+
+
+# generate_report(json_data)
