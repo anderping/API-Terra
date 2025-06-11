@@ -81,7 +81,7 @@ def generate_report(data, frequency='weekly'):
         labels=labels,
         values=values,
         hole=0.4, # Crea un gráfico de donut
-        pull=[0.05] * len(labels), # Separa ligeramente las porciones para destacarlas
+        pull=[0.0] * len(labels), # Separa ligeramente las porciones para destacarlas
         marker_colors=mi_paleta[:len(labels)], # Aplica los colores
         textinfo='percent', # Muestra el porcentaje directamente en las porciones
         textfont=dict(size=12, color='black'), # Estilo del texto del porcentaje
@@ -90,15 +90,17 @@ def generate_report(data, frequency='weekly'):
 
     # Configurar el diseño del gráfico y el título
     fig_pie.update_layout(
-        title_text=f"<b>Distribución de Solicitudes</b><br>Semana previa al {hoy.strftime('%d/%m/%Y')}<br>Solicitudes recibidas en la última semana: {total}",
+        title_text=f"<b>Distribución de Solicitudes<br>Semana previa al {hoy.strftime('%d/%m/%Y')}<br>Solicitudes recibidas en la última semana: {total}</b>",
         title_x=0.5, # Centra el título
-        title_font_size=16,
+        title_y=1, # Ajusta la posición vertical del título
+        title_font_size=18,
         legend=dict(
             orientation="h", # Leyenda horizontal
             yanchor="bottom",
-            y=-0.2, # Posiciona la leyenda debajo del gráfico
+            y=-0.1, # Posiciona la leyenda debajo del gráfico
             xanchor="center",
-            x=0.5
+            x=0.5,
+            font=dict(size=20)
         ),
         margin=dict(t=80, b=80, l=40, r=40), # Ajusta los márgenes
         paper_bgcolor='rgba(0,0,0,0)', # Fondo del papel (fuera del área del gráfico) transparente
@@ -118,8 +120,6 @@ def generate_report(data, frequency='weekly'):
     df['resolutionTime'] = np.random.randint(1, 22, size=len(df))
 
     resolucion_semanal = df.groupby(df['createdAt'].dt.to_period('W'))['resolutionTime'].mean()
-
-    print(resolucion_semanal)
 
     # Crear el gráfico de línea de Plotly
     fig_line = go.Figure()
@@ -147,9 +147,23 @@ def generate_report(data, frequency='weekly'):
     fig_line.update_layout(
         title_text="<b>Tiempo promedio de resolución semanal</b>",
         title_x=0.5, # Centra el título
-        title_font_size=16,
+        title_font_size=18,
         xaxis_title="Semana",
         yaxis_title="Días",
+        xaxis=dict(
+            title=dict(
+                font=dict(
+                    size=16
+                )
+            )
+        ),
+        yaxis=dict(
+            title=dict(
+                font=dict(
+                    size=16
+                )
+            )
+        ),
         hovermode="x unified", # Muestra tooltip para todos los trazos en un punto X
         # Eliminar fondo (transparente)
         paper_bgcolor='rgba(0,0,0,0)',
