@@ -1,12 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
+# import seaborn as sns
 import plotly.graph_objects as go
 
-
 import os
-import uuid
+# import uuid
 from datetime import datetime, timedelta, timezone
 import json
 
@@ -107,7 +106,7 @@ def generate_report(data, frequency='weekly'):
         plot_bgcolor='rgba(0,0,0,0)', # Fondo del área del gráfico transparente
     )
 
-    fig_pie.show() # ¡Esta es la línea clave para visualizar!
+    # fig_pie.show()
 
     save_plotly_fig_to_json_list(fig_pie, json_graphs)
 
@@ -183,9 +182,9 @@ def generate_report(data, frequency='weekly'):
         yaxis_gridcolor='lightgray'
     )
 
-    fig_line.show() # ¡Esta es la línea clave para visualizar!
+    # fig_line.show()
 
-    save_plotly_fig_to_json_list(fig_pie, json_graphs)
+    save_plotly_fig_to_json_list(fig_line, json_graphs)
 
     # print(fig_pie.to_json())
 
@@ -262,7 +261,20 @@ def generate_report(data, frequency='weekly'):
 
     # print(filenames)
 
+
+
+    # for i, chart_json_string in enumerate(json_graphs):   
+    #     # Paso 1: Convertir la cadena JSON a un diccionario de Python
+    #     chart_dict = json.loads(chart_json_string)
+        
+    #     # Paso 2: Crear el objeto Figure de Plotly a partir del diccionario
+    #     fig_reconstructed = go.Figure(chart_dict)
+        
+    #     # Paso 3: Visualizar el gráfico
+    #     fig_reconstructed.show()
+
     return json_graphs
 
 
-generate_report(json_data)
+# generate_report(json_data)
+
