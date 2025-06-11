@@ -54,10 +54,10 @@ def report():
     data = request.get_json()
     
     try:
-        filenames = generate_report(data)
-        urls = [url_for('static', filename=f'reports/{file_name}', _external=True) for file_name in filenames]
+        json_graphs = generate_report(data)
+        # urls = [url_for('static', filename=f'reports/{file_name}', _external=True) for file_name in filenames]
         
-        return jsonify({"status": "ok", "graphs": urls})  # COMENTAR CON FULLSTACK QUE LO QUE LES MANDO SON URLS
+        return jsonify({"status": "ok", "graphs": json_graphs})  # COMENTAR CON FULLSTACK QUE LO QUE LES MANDO SON URLS
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500

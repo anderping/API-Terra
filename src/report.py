@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import plotly.graph_objects as go
+
 
 import os
 import uuid
@@ -12,8 +14,7 @@ import json
 # from pymongo import MongoClient, DESCENDING
 
 
-# json_data = """[{"_id":"6847e0955eb9ba10de0cc473","issueType":"Copy revision","status":"In Progress","issueId":"86c3y1ebq","client":{"lockUntil":null,"resetPasswordToken":null,"resetPasswordExpires":null,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"gsyshwn","page":"jsnsh","createdAt":"2025-06-10T07:36:53.707Z","__v":0,"screenshot":"","terraComments":"Muy bien"},{"_id":"6847e11a5eb9ba10de0cc4a7","issueType":"Requested Change","status":"On Hold","issueId":"86c3y1gd5","client":{"lockUntil":null,"resetPasswordToken":null,"resetPasswordExpires":null,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"duask","page":"cnjanl","screenshot":"captura-desde-2025-04-07-17-02-47-250610073906-g3.png","createdAt":"2025-06-10T07:39:06.910Z","__v":0},{"_id":"6847f62a1c4d59011c9f3818","issueType":"Requested Change","status":"Post Launch","issueId":"86c3y4nhz","client":{"lockUntil":null,"resetPasswordToken":null,"resetPasswordExpires":null,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"deed","page":"dedde","screenshot":"captura-desde-2025-04-07-17-02-47-250610090857-d1.png","createdAt":"2025-06-10T09:08:58.584Z","__v":0},{"_id":"68481a2b110e4502d93f4b96","issueType":"Requested Change","status":"On Hold","issueId":"86c3y97z6","client":{"lockUntil":null,"resetPasswordToken":null,"resetPasswordExpires":null,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"deedde","page":"deeded","screenshot":"captura-desde-2025-04-07-17-02-47-250610114234-p9.png","createdAt":"2025-06-10T11:42:35.869Z","__v":0},{"_id":"68481daf18f5b4769c307251","issueType":"Bug Fix","status":"On Hold","issueId":"86c3y9kt3","client":{"lockUntil":null,"resetPasswordToken":null,"resetPasswordExpires":null,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"dede","page":"deeded","createdAt":"2025-06-10T11:57:35.769Z","__v":0},{"_id":"68481dbf18f5b4769c307262","issueType":"Copy revision","status":"Ready to upload","issueId":"86c3y9kya","client":{"lockUntil":null,"resetPasswordToken":null,"resetPasswordExpires":null,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"ededd","page":"ededde","createdAt":"2025-06-10T11:57:51.709Z","__v":0}]"""
-
+json_data = [{"_id":"6847e0955eb9ba10de0cc473","issueType":"Copy revision","status":"In Progress","issueId":"86c3y1ebq","client":{"lockUntil":None,"resetPasswordToken":None,"resetPasswordExpires":None,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"gsyshwn","page":"jsnsh","createdAt":"2025-06-10T07:36:53.707Z","__v":0,"screenshot":"","terraComments":"Muy bien"},{"_id":"6847e11a5eb9ba10de0cc4a7","issueType":"Requested Change","status":"On Hold","issueId":"86c3y1gd5","client":{"lockUntil":None,"resetPasswordToken":None,"resetPasswordExpires":None,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"duask","page":"cnjanl","screenshot":"captura-desde-2025-04-07-17-02-47-250610073906-g3.png","createdAt":"2025-06-10T07:39:06.910Z","__v":0},{"_id":"6847f62a1c4d59011c9f3818","issueType":"Requested Change","status":"Post Launch","issueId":"86c3y4nhz","client":{"lockUntil":None,"resetPasswordToken":None,"resetPasswordExpires":None,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"deed","page":"dedde","screenshot":"captura-desde-2025-04-07-17-02-47-250610090857-d1.png","createdAt":"2025-06-10T09:08:58.584Z","__v":0},{"_id":"68481a2b110e4502d93f4b96","issueType":"Requested Change","status":"On Hold","issueId":"86c3y97z6","client":{"lockUntil":None,"resetPasswordToken":None,"resetPasswordExpires":None,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"deedde","page":"deeded","screenshot":"captura-desde-2025-04-07-17-02-47-250610114234-p9.png","createdAt":"2025-06-10T11:42:35.869Z","__v":0},{"_id":"68481daf18f5b4769c307251","issueType":"Bug Fix","status":"On Hold","issueId":"86c3y9kt3","client":{"lockUntil":None,"resetPasswordToken":None,"resetPasswordExpires":None,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"dede","page":"deeded","createdAt":"2025-06-10T11:57:35.769Z","__v":0},{"_id":"68481dbf18f5b4769c307262","issueType":"Copy revision","status":"Ready to upload","issueId":"86c3y9kya","client":{"lockUntil":None,"resetPasswordToken":None,"resetPasswordExpires":None,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"ededd","page":"ededde","createdAt":"2025-06-10T11:57:51.709Z","__v":0}]
 
 
 mi_paleta = [    
@@ -29,16 +30,10 @@ mi_paleta = [
 ]
 
 
-def save_and_close_fig(fig, output_dir, filenames):
-    """Guarda y cierra una figura de matplotlib."""
+def save_plotly_fig_to_json_list(plotly_fig_obj, json_graphs):
+    chart_json_string = plotly_fig_obj.to_json()
     
-    filename = f"graph_{uuid.uuid4().hex}.png"
-    path = os.path.join(output_dir, filename)
-
-    fig.savefig(path, transparent=True)
-    plt.close(fig)
-
-    filenames.append(filename)
+    json_graphs.append(chart_json_string)
 
 
 def generate_report(data, frequency='weekly'):
@@ -53,60 +48,20 @@ def generate_report(data, frequency='weekly'):
         if fname.endswith(".png"):
             os.remove(os.path.join(output_dir, fname))
 
-    # # Obtener datos de MongoDB
-    # client = MongoClient("mongodb://localhost:27017/") # CAMBIAR SEGÚN URL DE CONEXIÓN
-    # db = client["mi_base"] # CAMBIAR SEGÚN NOMBRE DE BASE DE DATOS
-    # coleccion = db["mi_coleccion"]  # CAMBIAR SEGÚN NOMBRE DE COLECCIÓN
-
-    # projection = {
-    #     "issueType": 1,
-    #     "status": 1,
-    #     "client.name": 1,
-    # }
-
-    # if frequency == 'weekly':
-    #     # Informe semanal regular: últimos 30 registros
-    #     datos = list(coleccion.find({}, projection).sort("createdAt", DESCENDING).limit(30))  # HAY QUE ASEGURAR CON FULLSTACK QUE "DATE" ESTÁ EN FORMATO CORRECTO (DATE)
-
-    # elif frequency == 'monthly':
-    #     # Informe mensual regular: últimos 120 registros
-    #     datos = list(coleccion.find({}, projection).sort("createdAt", DESCENDING).limit(120))
-
-    # if not datos:
-    #     raise ValueError("No data available.")
-    
-    # for d in datos:
-    #     d["client_name"] = d.get("client", {}).get("name")
-    #     d.pop("client", None)  # Elimina el objeto client si ya no se necesita
-
 
     # Cargar datos
     df = pd.json_normalize(data)
-    
-    # COLUMNAS DEL DATAFRAME:
-    #
-    # Index(['_id', 'issueType', 'status', 'issueId', 'device', 'browser', 'clientComment', 'page', 'createdAt', '__v', 'screenshot',
-    #    'terraComments', 'client.lockUntil', 'client.resetPasswordToken', 'client.resetPasswordExpires', 'client._id', 'client.userId',
-    #    'clientComment', 'page', 'createdAt', '__v', 'screenshot', 'terraComments', 'client.lockUntil', 'client.resetPasswordToken',
-    #    'client.resetPasswordExpires', 'client._id', 'client.userId', 'client.name', 'client.role', 'client.email', 'client.createdAt',
-    #    'terraComments', 'client.lockUntil', 'client.resetPasswordToken', 'client.resetPasswordExpires', 'client._id', 'client.userId',
-    #    'client.name', 'client.role', 'client.email', 'client.createdAt', 'client.resetPasswordExpires', 'client._id', 'client.userId',
-    #    'client.name', 'client.role', 'client.email', 'client.createdAt', 'client.name', 'client.role', 'client.email', 'client.createdAt',
-    #    'client.updatedAt', 'client.__v', 'client.workspaceId', 'client.updatedAt', 'client.__v', 'client.workspaceId',
-    #    'client.loginAttempts', 'client.folderId', 'client.spaceId'],
-    #   dtype='object')
 
-
-    filenames = []
+    json_graphs = []
     
     # GENERAR GRÁFICOS
 
-    # GRÁFICO 1: Solicitudes recibidas en la última semana
-    
-    # Convertir 'created_at' a datetime
+    # --- GRÁFICO 1 ---
+
+    # Convertir 'createdAt' a datetime
     df['createdAt'] = pd.to_datetime(df['createdAt'])
 
-    # Calcular la fecha de hace una semana
+    # Calcular la fecha de hace una semana (en UTC)
     hoy = datetime.now(timezone.utc)
     una_semana_atras = hoy - timedelta(days=7)
 
@@ -117,79 +72,108 @@ def generate_report(data, frequency='weekly'):
     conteo_por_tipo = df_semana['issueType'].value_counts()
     total = conteo_por_tipo.sum()
 
-    # Calcular porcentajes
-    porcentajes = (conteo_por_tipo / total * 100).round(2)
+    # Preparar los datos para Plotly
+    labels = conteo_por_tipo.index
+    values = conteo_por_tipo.values
 
-    # Explode para destacar cada porción
-    explode = [0.05] * len(porcentajes)
+    # Crear el gráfico de donut de Plotly
+    fig_pie = go.Figure(data=[go.Pie(
+        labels=labels,
+        values=values,
+        hole=0.4, # Crea un gráfico de donut
+        pull=[0.05] * len(labels), # Separa ligeramente las porciones para destacarlas
+        marker_colors=mi_paleta[:len(labels)], # Aplica los colores
+        textinfo='percent', # Muestra el porcentaje directamente en las porciones
+        textfont=dict(size=12, color='black'), # Estilo del texto del porcentaje
+        hoverinfo='label+percent+value' # Información que aparece al pasar el ratón
+    )])
 
-    # Crear gráfico de pastel
-    fig, ax = plt.subplots(figsize=(8, 6))
-    wedges, texts, autotexts = ax.pie(
-        porcentajes,
-        labels=None,  # No mostramos etiquetas directamente
-        autopct='%1.1f%%',
-        explode=explode,
-        shadow=True,
-        startangle=140,
-        textprops={'fontsize': 10, 'weight': 'bold'}
+    # Configurar el diseño del gráfico y el título
+    fig_pie.update_layout(
+        title_text=f"<b>Distribución de Solicitudes</b><br>Semana previa al {hoy.strftime('%d/%m/%Y')}<br>Solicitudes recibidas en la última semana: {total}",
+        title_x=0.5, # Centra el título
+        title_font_size=16,
+        legend=dict(
+            orientation="h", # Leyenda horizontal
+            yanchor="bottom",
+            y=-0.2, # Posiciona la leyenda debajo del gráfico
+            xanchor="center",
+            x=0.5
+        ),
+        margin=dict(t=80, b=80, l=40, r=40), # Ajusta los márgenes
+        paper_bgcolor='rgba(0,0,0,0)', # Fondo del papel (fuera del área del gráfico) transparente
+        plot_bgcolor='rgba(0,0,0,0)', # Fondo del área del gráfico transparente
     )
 
-    # Crear leyenda
-    ax.legend(
-        wedges,
-        conteo_por_tipo.index,
-        title="Tipo de Solicitud",
-        loc="center left",
-        bbox_to_anchor=(1, 0, 0.5, 1),
-        frameon=False,
-    )
+    fig_pie.show() # ¡Esta es la línea clave para visualizar!
 
-    #ax.set_title("Solicitudes recibidas en la última semana", fontsize=14, weight='bold')
-    ax.set_title(f"Distribución de Solicitudes\nSemana previa al {hoy.strftime('%d/%m/%Y')}\nSolicitudes recibidas en la última semana: {total}", pad=20)
-    ax.axis('equal')  # Para que sea un círculo
+    save_plotly_fig_to_json_list(fig_pie, json_graphs)
 
-    # Eliminar fondo
-    fig.patch.set_visible(False)
-    ax.set_facecolor('none')
-
-    plt.tight_layout()
-
-    # Guardar gráfico
-    save_and_close_fig(fig, output_dir, filenames)
+    # print(fig_pie.to_json())
 
 
-    # GRÁFICO 2: Tiempo promedio de resolución semanal
+    # --- GRÁFICO 2 ---
 
     np.random.seed(42)
     df['resolutionTime'] = np.random.randint(1, 22, size=len(df))
 
     resolucion_semanal = df.groupby(df['createdAt'].dt.to_period('W'))['resolutionTime'].mean()
 
-    # Crear figura y eje
-    fig, ax = plt.subplots(figsize=(12, 6))
+    print(resolucion_semanal)
 
-    ax.plot(
-        resolucion_semanal.index.to_timestamp(),
-        resolucion_semanal.values,
-        marker='o',
-        color=mi_paleta[1]
+    # Crear el gráfico de línea de Plotly
+    fig_line = go.Figure()
+
+    # Añadir la línea principal del promedio de resolución
+    fig_line.add_trace(go.Scatter(
+        x=resolucion_semanal.index.to_timestamp(), # Eje X: semanas convertidas a timestamp
+        y=resolucion_semanal.values, # Eje Y: valores de resolución
+        mode='lines+markers', # Muestra tanto líneas como marcadores
+        marker=dict(color=mi_paleta[1], size=8), # Color del marcador de tu paleta
+        line=dict(color=mi_paleta[1], width=2), # Color y grosor de la línea
+        name='Tiempo Promedio'
+    ))
+
+    # Añadir la línea del Límite SLA (línea horizontal)
+    fig_line.add_trace(go.Scatter(
+        x=resolucion_semanal.index.to_timestamp(), # Usa las mismas semanas para la línea SLA
+        y=[21] * len(resolucion_semanal), # Valor fijo de 21 para cada punto
+        mode='lines',
+        line=dict(color='gray', dash='dash', width=1), # Estilo de línea punteada
+        name='Límite SLA'
+    ))
+
+    # Configurar el diseño y los títulos del gráfico
+    fig_line.update_layout(
+        title_text="<b>Tiempo promedio de resolución semanal</b>",
+        title_x=0.5, # Centra el título
+        title_font_size=16,
+        xaxis_title="Semana",
+        yaxis_title="Días",
+        hovermode="x unified", # Muestra tooltip para todos los trazos en un punto X
+        # Eliminar fondo (transparente)
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        # Configuración de la leyenda
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02, # Coloca la leyenda encima del gráfico
+            xanchor="right",
+            x=1
+        ),
+        # Mostrar cuadrícula
+        xaxis_showgrid=True,
+        yaxis_showgrid=True,
+        xaxis_gridcolor='lightgray',
+        yaxis_gridcolor='lightgray'
     )
 
-    ax.set_title("Tiempo promedio de resolución semanal")
-    ax.set_xlabel("Semana")
-    ax.set_ylabel("Días")
-    ax.axhline(21, linestyle='--', color='gray', label='Límite SLA')
-    ax.legend()
-    ax.grid(True)
-    fig.tight_layout()
+    fig_line.show() # ¡Esta es la línea clave para visualizar!
 
-    # Fondo transparente
-    fig.patch.set_visible(False)
-    ax.set_facecolor('none')
+    save_plotly_fig_to_json_list(fig_pie, json_graphs)
 
-    # Guardar gráfico
-    save_and_close_fig(fig, output_dir, filenames)
+    # print(fig_pie.to_json())
 
 
 
@@ -262,13 +246,9 @@ def generate_report(data, frequency='weekly'):
     # # Guardar gráfico
     # save_and_close_fig(fig, output_dir, filenames)
 
-    print(filenames)
+    # print(filenames)
 
-    return filenames
-
-
-# if __name__ == "__main__":
-#     generate_report()
+    return json_graphs
 
 
-# generate_report(json_data)
+generate_report(json_data)
