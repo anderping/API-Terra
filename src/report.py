@@ -32,7 +32,9 @@ mi_paleta = [
 def save_plotly_fig_to_json_list(plotly_fig_obj, json_graphs):
     chart_json_string = plotly_fig_obj.to_json()
     
-    json_graphs.append(chart_json_string)
+    chart_dict = json.loads(chart_json_string)
+
+    json_graphs.append(chart_dict)
 
 
 def generate_report(data, frequency='weekly'):
