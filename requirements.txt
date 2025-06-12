@@ -8,6 +8,6 @@ scikit-learn==1.6.1
 googletrans==4.0.2
 sentence_transformers==4.1.0
 xgboost==3.0.2
-joblib==1.5.1
+# joblib==1.5.1
 spacy==3.8.7
 plotly==6.1.2

@@ -3,7 +3,7 @@ from report import generate_report
 
 import pandas as pd
 
-import joblib
+import pickle
 import os
 
 from flask import Flask, jsonify, request, url_for
@@ -25,7 +25,7 @@ def predict():
     model_path = os.path.join(os.path.dirname(__file__), '..', 'model', 'model.pkl')
 
     with open(model_path, 'rb') as file:
-        model = joblib.load(file) # ASEGURAR QUE ESE ES EL NOMBRE
+        model = pickle.load(file) # ASEGURAR QUE ESE ES EL NOMBRE
 
     data = request.get_json()
 

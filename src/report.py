@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 # import seaborn as sns
+import plotly.express as px
 import plotly.graph_objects as go
 
 import os
@@ -12,8 +13,11 @@ import json
 
 # from pymongo import MongoClient, DESCENDING
 
+os.chdir(os.path.dirname(__file__))
 
-json_data = [{"_id":"6847e0955eb9ba10de0cc473","issueType":"Copy revision","status":"In Progress","issueId":"86c3y1ebq","client":{"lockUntil":None,"resetPasswordToken":None,"resetPasswordExpires":None,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"gsyshwn","page":"jsnsh","createdAt":"2025-06-10T07:36:53.707Z","__v":0,"screenshot":"","terraComments":"Muy bien"},{"_id":"6847e11a5eb9ba10de0cc4a7","issueType":"Requested Change","status":"On Hold","issueId":"86c3y1gd5","client":{"lockUntil":None,"resetPasswordToken":None,"resetPasswordExpires":None,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"duask","page":"cnjanl","screenshot":"captura-desde-2025-04-07-17-02-47-250610073906-g3.png","createdAt":"2025-06-10T07:39:06.910Z","__v":0},{"_id":"6847f62a1c4d59011c9f3818","issueType":"Requested Change","status":"Post Launch","issueId":"86c3y4nhz","client":{"lockUntil":None,"resetPasswordToken":None,"resetPasswordExpires":None,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"deed","page":"dedde","screenshot":"captura-desde-2025-04-07-17-02-47-250610090857-d1.png","createdAt":"2025-06-10T09:08:58.584Z","__v":0},{"_id":"68481a2b110e4502d93f4b96","issueType":"Requested Change","status":"On Hold","issueId":"86c3y97z6","client":{"lockUntil":None,"resetPasswordToken":None,"resetPasswordExpires":None,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"deedde","page":"deeded","screenshot":"captura-desde-2025-04-07-17-02-47-250610114234-p9.png","createdAt":"2025-06-10T11:42:35.869Z","__v":0},{"_id":"68481daf18f5b4769c307251","issueType":"Bug Fix","status":"On Hold","issueId":"86c3y9kt3","client":{"lockUntil":None,"resetPasswordToken":None,"resetPasswordExpires":None,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"dede","page":"deeded","createdAt":"2025-06-10T11:57:35.769Z","__v":0},{"_id":"68481dbf18f5b4769c307262","issueType":"Copy revision","status":"Ready to upload","issueId":"86c3y9kya","client":{"lockUntil":None,"resetPasswordToken":None,"resetPasswordExpires":None,"_id":"6846f64b15f6e0aa2607acae","userId":"1RHPA8","name":"Igor Aparicio","role":"admin","email":"igoruve@gmail.com","createdAt":"2025-06-09T14:57:15.535Z","updatedAt":"2025-06-10T13:26:04.381Z","__v":0,"workspaceId":"90151243006","loginAttempts":0,"folderId":"90157537518","spaceId":"90155116219"},"device":"Desktop","browser":"Google Chrome","clientComment":"ededd","page":"ededde","createdAt":"2025-06-10T11:57:51.709Z","__v":0}]
+with open("issues_data.json", 'r') as file:
+    # Cargar los datos JSON desde el archivo
+    json_data = json.load(file)
 
 
 mi_paleta = [    
@@ -40,14 +44,14 @@ def save_plotly_fig_to_json_list(plotly_fig_obj, json_graphs):
 def generate_report(data, frequency='weekly'):
     """Genera un informe de gráficos a partir de datos JSON."""
 
-    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    output_dir = os.path.join(base_dir, 'static', 'reports')
-    os.makedirs(output_dir, exist_ok=True)
+    # base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    # output_dir = os.path.join(base_dir, 'static', 'reports')
+    # os.makedirs(output_dir, exist_ok=True)
     
-    # Elimina imágenes previas del directorio
-    for fname in os.listdir(output_dir):
-        if fname.endswith(".png"):
-            os.remove(os.path.join(output_dir, fname))
+    # # Elimina imágenes previas del directorio
+    # for fname in os.listdir(output_dir):
+    #     if fname.endswith(".png"):
+    #         os.remove(os.path.join(output_dir, fname))
 
 
     # Cargar datos
@@ -108,7 +112,7 @@ def generate_report(data, frequency='weekly'):
         plot_bgcolor='rgba(0,0,0,0)', # Fondo del área del gráfico transparente
     )
 
-    # fig_pie.show()
+    fig_pie.show()
 
     save_plotly_fig_to_json_list(fig_pie, json_graphs)
 
@@ -146,7 +150,7 @@ def generate_report(data, frequency='weekly'):
 
     # Configurar el diseño y los títulos del gráfico
     fig_line.update_layout(
-        title_text="<b>Tiempo promedio de resolución semanal</b>",
+        title_text="<b>Evolución del tiempo promedio de resolución semanal</b>",
         title_x=0.5, # Centra el título
         title_font_size=18,
         xaxis_title="Semana",
@@ -184,7 +188,7 @@ def generate_report(data, frequency='weekly'):
         yaxis_gridcolor='lightgray'
     )
 
-    # fig_line.show()
+    fig_line.show()
 
     save_plotly_fig_to_json_list(fig_line, json_graphs)
 
@@ -192,77 +196,102 @@ def generate_report(data, frequency='weekly'):
 
 
 
-    # # GRÁFICO 3: Distribución de tipos de proyecto por cliente
+    # --- GRÁFICO 3: Distribución de tipos de proyecto por cliente ---
 
-    # # Preparar los datos
-    # conteo_cliente_tipo = df.groupby(['client', 'type']).size().unstack().fillna(0)
+    fig_client1 = px.histogram(df,
+                            x='client.userId', # Usamos 'client.userId' como columna para el eje X
+                            color='issueType',
+                            color_discrete_sequence=mi_paleta, # ¡Aquí se usa tu paleta!
+                            title="<b>Distribución de proyectos por cliente</b>")
 
-    # # Crear figura y eje manualmente
-    # fig, ax = plt.subplots(figsize=(14, 7))
+    # Configurar el diseño del gráfico para mayor claridad y estética
+    fig_client1.update_layout(
+        title_x=0.5, # Centra el título
+        title_font_size=18,
+        xaxis_title="Cliente",
+        yaxis_title="Cantidad de solicitudes",
+        xaxis=dict(
+            title=dict(font=dict(size=16)),
+            tickangle=45, # Inclina las etiquetas del eje X para que no se solapen
+            tickfont=dict(size=13)
+        ),
+        yaxis=dict(
+            title=dict(font=dict(size=16)),
+            tickfont=dict(size=13),
+            showgrid=True, # Mostrar cuadrícula en eje Y
+            gridcolor='lightgray'
+        ),
+        paper_bgcolor='rgba(0,0,0,0)', # Fondo transparente del papel del gráfico
+        plot_bgcolor='rgba(0,0,0,0)', # Fondo transparente del área de trazado
+        legend=dict(
+            orientation="h", # Leyenda horizontal
+            yanchor="bottom",
+            y=1.02, # Posición de la leyenda (encima del gráfico)
+            xanchor="right",
+            x=1,
+            title_text="Tipo de Incidencia"
+        ),
+        bargap=0.1 # Espacio entre las barras
+    )
 
-    # # Dibujar gráfico de barras apiladas
-    # conteo_cliente_tipo.plot(
-    #     kind='bar',
-    #     stacked=True,
-    #     ax=ax,
-    #     color=mi_paleta[:conteo_cliente_tipo.columns.size]
-    # )
+    # Mostrar el gráfico (en un entorno interactivo como Jupyter o un script que lo abra en el navegador)
+    fig_client1.show()
 
-    # # Títulos y etiquetas
-    # ax.set_title("Distribution of Project Types by Client")
-    # ax.set_xlabel("Client")
-    # ax.set_ylabel("Request Count")
-    # ax.set_xticklabels(conteo_cliente_tipo.index, rotation=90, fontsize=13)
-    # ax.tick_params(axis='y', labelsize=13)
-    # ax.legend(fontsize=6)
-
-    # # Eliminar fondo
-    # fig.patch.set_visible(False)
-    # ax.set_facecolor('none')
-
-    # plt.tight_layout()
-
-    # # Guardar gráfico
-    # save_and_close_fig(fig, output_dir, filenames)
+    save_plotly_fig_to_json_list(fig_client1, json_graphs)
 
 
 
-    # # GRÁFICO 4: Tiempo promedio de resolución por cliente
+    # GRÁFICO 4: Tiempo promedio de resolución por cliente
 
-    # # Agrupación
-    # df_completadas = df_muestra[df_muestra['status'] == 'Complete'].copy()
-    # tiempos_por_cliente = df_completadas.groupby('client')['days_to_complete'].mean().sort_values(ascending=False)
+    df_completadas = df[df['status'] == 'Complete'].copy()
 
-    # # Crear figura y eje
-    # fig, ax = plt.subplots(figsize=(12, 6))
+    tiempos_por_cliente = df_completadas.groupby('client.userId')['resolutionTime'].mean().sort_values(ascending=False)
 
-    # # Gráfico con Seaborn usando el eje
-    # sns.barplot(
-    #     x=tiempos_por_cliente.values,
-    #     y=tiempos_por_cliente.index,
-    #     palette=mi_paleta[:len(tiempos_por_cliente)],
-    #     ax=ax
-    # )
+    # Crear el gráfico de barras horizontal con Plotly Express
+    fig_client2 = px.bar(tiempos_por_cliente,
+                        x=tiempos_por_cliente.values,
+                        y=tiempos_por_cliente.index,
+                        orientation='h', # Define el gráfico como horizontal
+                        title="<b>Tiempo promedio de resolución por cliente</b>",
+                        labels={tiempos_por_cliente.name: "Tiempo promedio de resolución (días)",
+                                "index": "Cliente"}, # Personaliza las etiquetas de los ejes
+                        color=tiempos_por_cliente.index, # Colorea las barras según el 'userID' (categoría)
+                        color_discrete_sequence=mi_paleta # ¡Aquí se usa tu paleta discreta!
+                        )
 
-    # # Personalización
-    # ax.set_xlabel("Average Resolution Time (days)")
-    # ax.set_ylabel("Client")
-    # ax.set_title("Average Resolution Time by Client")
-    # ax.tick_params(axis='x', labelrotation=90, labelsize=13)
-    # ax.tick_params(axis='y', labelsize=13)
-    # ax.grid(False)
+    # Ordenar las categorías del eje Y para que el valor más alto (mayor tiempo) esté arriba
+    fig_client2.update_yaxes(categoryorder='total ascending') # 'total ascending' ordena por la longitud de la barra en gráficos horizontales
 
-    # # Quitar fondo
-    # fig.patch.set_visible(False)
-    # ax.set_facecolor('none')
+    # Personalización del diseño del gráfico
+    fig_client2.update_layout(
+        title_x=0.5, # Centra el título
+        title_font_size=18,
+        xaxis_title="Tiempo promedio de resolución (días)",
+        yaxis_title="Cliente",
+        xaxis=dict(
+            title=dict(font=dict(size=16)),
+            tickfont=dict(size=13),
+            showgrid=True, # Mostrar cuadrícula en el eje X
+            gridcolor='lightgray', # Color de la cuadrícula
+            gridwidth=1 # Ancho de la línea de la cuadrícula
+        ),
+        yaxis=dict(
+            title=dict(font=dict(size=16)),
+            tickfont=dict(size=13),
+            showgrid=True, # Mostrar cuadrícula en el eje Y
+            gridcolor='lightgray', # Color de la cuadrícula
+            gridwidth=1 # Ancho de la línea de la cuadrícula
+        ),
+        paper_bgcolor='rgba(0,0,0,0)', # Fondo transparente del papel del gráfico
+        plot_bgcolor='rgba(0,0,0,0)', # Fondo transparente del área de trazado
+        bargap=0.1, # Espacio entre las barras
+        showlegend=False # Oculta la leyenda de colores si los colores representan las categorías de los clientes y no un mapeo continuo.
+    )
 
-    # plt.tight_layout()
+    # Mostrar el gráfico (esto abrirá una ventana o lo mostrará en tu entorno Jupyter)
+    fig_client2.show()
 
-    # # Guardar gráfico
-    # save_and_close_fig(fig, output_dir, filenames)
-
-    # print(filenames)
-
+    save_plotly_fig_to_json_list(fig_client2, json_graphs)
 
 
     # for i, chart_json_string in enumerate(json_graphs):   
@@ -278,5 +307,5 @@ def generate_report(data, frequency='weekly'):
     return json_graphs
 
 
-# generate_report(json_data)
+generate_report(json_data)
 
