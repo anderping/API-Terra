@@ -15,6 +15,8 @@ from sentence_transformers import SentenceTransformer
 from googletrans import Translator
 
 
+# Funciones para cargar y corregir texto en español:
+
 # def cargar_symspell_es(diccionario_path='frequency_dictionary_es.txt'):
 #     sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
 
@@ -224,10 +226,8 @@ class RequestClassifierPipeline:
         y_encoded = self.label_encoder.fit_transform(y)
         self.classes_ = self.label_encoder.classes_
         
-        # Calcular pesos
         sample_weights = self._calculate_sample_weights(y_encoded)
         
-        # Entrenamiento condicional
         fit_params = {'classifier__sample_weight': sample_weights} if sample_weights is not None else {}
         self.pipeline.fit(X, y_encoded, **fit_params)
         
@@ -259,7 +259,7 @@ class RequestClassifierPipeline:
         pd.DataFrame
             DataFrame con predicciones y metadatos
         """
-        # Umbrales por defecto si no se especifican
+        # Umbrales
         if class_thresholds is None:
             class_thresholds = {
                 "Bug Fix": 0.9,
@@ -269,7 +269,6 @@ class RequestClassifierPipeline:
                 "Requested Change": 0.93
             }
 
-        # Obtener probabilidades y predicciones base
         probs = self.pipeline.predict_proba(X)
         y_pred = self.pipeline.predict(X)
         
@@ -289,13 +288,14 @@ class RequestClassifierPipeline:
             # Asignar la clase mayoritaria cuando la confianza es baja
             majority_class = np.argmax(np.bincount(y_pred))
             y_pred[uncertain_mask] = majority_class
+
         elif uncertainty_handling == 'original' and isinstance(X, pd.DataFrame) and "type" in X.columns:
-            # Mantener la etiqueta original si está disponible
             y_pred[uncertain_mask] = self.label_encoder.transform(X["type"][uncertain_mask])
+
         elif uncertainty_handling == 'second_best_not_addressing' and isinstance(X, pd.DataFrame) and "type" in X.columns:
             # Calcular segunda mejor clase
             second_best_idx = probs.argsort(axis=1)[:, -2]
-            # Aplicar estrategia
+
             for i in np.where(uncertain_mask)[0]:
                 if X["type"].iloc[i] == "Not Addressing":
                     # Forzar segunda mejor
@@ -309,7 +309,6 @@ class RequestClassifierPipeline:
         anomaly_scores = self.iso_forest.decision_function(features)
         threshold_score = np.percentile(anomaly_scores, anomaly_percentile)
         
-        # Construir DataFrame de resultados
         results = {
             "request_text": X["request_text"] if isinstance(X, pd.DataFrame) else X,
             "predicted_type": self.label_encoder.inverse_transform(y_pred),

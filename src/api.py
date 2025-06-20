@@ -25,14 +25,14 @@ def predict():
     model_path = os.path.join(os.path.dirname(__file__), '..', 'model', 'model.pkl')
 
     with open(model_path, 'rb') as file:
-        model = pickle.load(file) # ASEGURAR QUE ESE ES EL NOMBRE
+        model = pickle.load(file)
 
     data = request.get_json()
 
-    text = data.get('request_text', None) # ASEGURAR QUE ESE ES EL NOMBRE
+    text = data.get('request_text', None)
     type = data.get('request_type', None)
 
-    # Traducir a inglés si necesario
+    # Traduce a inglés si necesario
     en_text = translate(text) 
 
     sample = pd.DataFrame([{
@@ -57,7 +57,7 @@ def report():
         json_graphs = generate_report(data)
         # urls = [url_for('static', filename=f'reports/{file_name}', _external=True) for file_name in filenames]
         
-        return jsonify({"status": "ok", "graphs": json_graphs})  # COMENTAR CON FULLSTACK QUE LO QUE LES MANDO SON URLS
+        return jsonify({"status": "ok", "graphs": json_graphs})
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
